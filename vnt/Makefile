@@ -1,7 +1,6 @@
 include $(TOPDIR)/rules.mk
 
-# 关键修改：环境变量优先
-PKG_VERSION ?= 1.2.16
+PKG_VERSION:=2.0.0
 PKG_NAME:=vnt
 
 ifeq ($(ARCH),mipsel)
