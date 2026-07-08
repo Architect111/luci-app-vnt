@@ -1,0 +1,10 @@
+<%
+local log = nixio.fs.readfile("/tmp/vnt.log") or "暂无VNT2运行日志"
+%>
+<textarea readonly style="width:100%;height:600px;font-family:monospace;font-size:12px;">
+<%=pcdata(log)%>
+</textarea>
+<div class="cbi-page-actions">
+    <button class="btn btn-danger" onclick="fetch('/admin/vpn/vnt/clear_log').then(()=>location.reload())">清空日志</button>
+    <button class="btn btn-primary" onclick="location.reload()">刷新日志</button>
+</div>
