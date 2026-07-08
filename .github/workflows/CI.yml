@@ -22,7 +22,6 @@ on:
 env:
   TAG: "${{ github.event.inputs.tag }}"
   BIN_VERSION: "${{ github.event.inputs.bin_ver }}"
-  TARGET_ARCH: "${{ github.event.inputs.build_arch }}"
   TZ: Asia/Shanghai
 permissions:
   contents: write
@@ -63,8 +62,8 @@ jobs:
         sdk:
           - openwrt-22.03
           - SNAPSHOT
-    # 过滤逻辑：如果TARGET_ARCH不是all，只保留匹配架构
-    if: env.TARGET_ARCH == 'all' || matrix.arch == env.TARGET_ARCH
+    # 修复：直接读取 inputs 而不是顶层env
+    if: ${{ github.event.inputs.build_arch == 'all' || matrix.arch == github.event.inputs.build_arch }}
     steps:
       - uses: actions/checkout@v4
         with:
