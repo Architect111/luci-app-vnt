@@ -62,14 +62,18 @@ jobs:
         sdk:
           - openwrt-22.03
           - SNAPSHOT
-    # 修复：直接读取 inputs 而不是顶层env
-    if: ${{ github.event.inputs.build_arch == 'all' || matrix.arch == github.event.inputs.build_arch }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      # 架构过滤：非指定架构直接跳过编译
+      - name: Skip unmatched arch
+        if: ${{ github.event.inputs.build_arch != 'all' && matrix.arch != github.event.inputs.build_arch }}
+        run: echo "当前架构${{ matrix.arch }} 不是目标架构${{ github.event.inputs.build_arch }}，跳过编译" && exit 0
+
       - name: Building packages
+        if: ${{ github.event.inputs.build_arch == 'all' || matrix.arch == github.event.inputs.build_arch }}
         uses: sbwml/openwrt-gh-action-sdk@main
         env:
           ARCH: ${{ matrix.arch }}-${{ matrix.sdk }}
@@ -80,18 +84,20 @@ jobs:
           APP_VER: ${{ env.BIN_VERSION }}
 
       - name: Upload artifacts
+        if: ${{ github.event.inputs.build_arch == 'all' || matrix.arch == github.event.inputs.build_arch }}
         uses: actions/upload-artifact@v4
         with:
           name: VNT-${{ matrix.arch }}-${{ matrix.sdk }}
           path: bin/packages/${{ matrix.arch }}/packages_ci/
 
       - name: Create compress files
+        if: ${{ github.event.inputs.build_arch == 'all' || matrix.arch == github.event.inputs.build_arch }}
         run: |
           zip -j vnt-${{ matrix.arch }}-${{ matrix.sdk }}.zip bin/packages/${{ matrix.arch }}/packages_ci/*
           echo "build_time=$(date '+%Y年%m月%d日%H:%M:%S' | jq -sRr @uri)" >> $GITHUB_ENV
 
       - name: Release
-        if: ${{ github.event.inputs.tag != '' }}
+        if: ${{ github.event.inputs.tag != '' && (github.event.inputs.build_arch == 'all' || matrix.arch == github.event.inputs.build_arch) }}
         uses: softprops/action-gh-release@v2
         with:
             token: ${{ secrets.GITHUB_TOKEN }}
