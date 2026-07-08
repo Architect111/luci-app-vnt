@@ -1,7 +1,6 @@
 include $(TOPDIR)/rules.mk
 
-# 改为环境变量优先，CI传入APP_VER即可统一控制版本
-PKG_VERSION ?= 1.2.12
+PKG_VERSION:=2.0.1
 PKG_NAME:=vnts
 
 ifeq ($(ARCH),mipsel)
