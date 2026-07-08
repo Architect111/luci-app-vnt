@@ -11,16 +11,16 @@
 			var tb = document.getElementById('<%=self.option%>-status');
 			if (tb) {
   rv.list = rv.list.replace(/Name/g, "<em><b>设备名称</em></b>")
-                   .replace(/虚拟IP/g, "<em><b>虚拟IP</em></b>")
-                   .replace(/Status/g, "<em><b>状态</em></b>")
-                   .replace(/P2P\/Relay/g, "<em><b>直连/转发</em></b>")
-                   .replace(/Rt/g, "<em><b>延迟（ms）</em></b>")
+                   .replace(/虚拟IP/g, "<em><b>虚拟IP</b></em>")
+                   .replace(/Status/g, "<em><b>状态</b></em>")
+                   .replace(/P2P\/Relay/g, "<em><b>直连/转发</b></em>")
+                   .replace(/Rt/g, "<em><b>延迟（ms）</b></em>")
                    .replace(/Online/g, "<font color='#008000'>在线</font>")
                    .replace(/p2p/g, "<font color='#008000'>直连</font>")
                    .replace(/server-relay/g, "<font color='#FF3300'>服务器转发</font>")
                    .replace(/client-relay/g, "<font color='#CC3300'>客户端转发</font>")
                    .replace(/Offline/g, "<font color='#CC0000'>离线</font>");
-  tb.innerHTML = "<br><font color='#FF00FF'>&nbsp;&nbsp;&nbsp;<b><%:vnt-cli --list %></b></font><br>" + rv.list ;
+  tb.innerHTML = "<br><font color='#FF00FF'>&nbsp;&nbsp;&nbsp;<b><%:vnt --list %></b></font><br>" + rv.list ;
 }
 				btn.disabled = false;
 				btn.value = '<%:所有设备列表%>';
