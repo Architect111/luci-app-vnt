@@ -4,20 +4,25 @@ on:
   workflow_dispatch:
     inputs:
       bin_ver:
-        description: 二进制vnt/vnts发布版本（如1.2.16）
+        description: 二进制vnt/vnts Release版本号(如1.2.16)
         required: true
         default: '1.2.16'
+      build_arch:
+        description: 指定编译架构，填all编译全部；示例 aarch64_cortex-a53
+        required: true
+        default: 'all'
       tag:
-        description: '请填写发布Releases的版本号（留空不发布）'
+        description: 发布tag版本，留空不自动发布Release
         required: false
         default: ''
       text:
-        description: '请填写发布的说明'
+        description: Release更新说明
         required: false
         default: ''
 env:
   TAG: "${{ github.event.inputs.tag }}"
   BIN_VERSION: "${{ github.event.inputs.bin_ver }}"
+  TARGET_ARCH: "${{ github.event.inputs.build_arch }}"
   TZ: Asia/Shanghai
 permissions:
   contents: write
@@ -58,7 +63,8 @@ jobs:
         sdk:
           - openwrt-22.03
           - SNAPSHOT
-
+    # 过滤逻辑：如果TARGET_ARCH不是all，只保留匹配架构
+    if: env.TARGET_ARCH == 'all' || matrix.arch == env.TARGET_ARCH
     steps:
       - uses: actions/checkout@v4
         with:
