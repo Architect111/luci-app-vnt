@@ -3,25 +3,20 @@ name: Build-OpenWrt-VNT
 on:
   workflow_dispatch:
     inputs:
-      bin_ver:
-        description: 二进制vnt/vnts Release版本号(如1.2.16)
-        required: true
-        default: '1.2.16'
       build_arch:
         description: 指定编译架构，填all编译全部；示例 aarch64_cortex-a53
         required: true
         default: 'all'
       tag:
-        description: 发布tag版本，留空不自动发布Release
+        description: '请填写发布Releases的版本号（留空不发布）'
         required: false
         default: ''
       text:
-        description: Release更新说明
+        description: '请填写发布的说明'
         required: false
         default: ''
 env:
   TAG: "${{ github.event.inputs.tag }}"
-  BIN_VERSION: "${{ github.event.inputs.bin_ver }}"
   TZ: Asia/Shanghai
 permissions:
   contents: write
@@ -67,8 +62,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      # 架构过滤：非指定架构直接跳过编译
-      - name: Skip unmatched arch
+      - name: 跳过非目标架构
         if: ${{ github.event.inputs.build_arch != 'all' && matrix.arch != github.event.inputs.build_arch }}
         run: echo "当前架构${{ matrix.arch }} 不是目标架构${{ github.event.inputs.build_arch }}，跳过编译" && exit 0
 
@@ -81,7 +75,6 @@ jobs:
           PACKAGES: vnt vnts luci-app-vnt
           NO_REFRESH_CHECK: true
           V: s
-          APP_VER: ${{ env.BIN_VERSION }}
 
       - name: Upload artifacts
         if: ${{ github.event.inputs.build_arch == 'all' || matrix.arch == github.event.inputs.build_arch }}
