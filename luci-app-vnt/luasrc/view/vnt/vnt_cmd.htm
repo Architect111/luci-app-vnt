@@ -33,18 +33,18 @@
                  .replace(/--first-latency/g, "<font color='#0000FF'><em><b>--first-latency&nbsp;</b></em></font>")
                  .replace(/--relay/g, "<font color='#0000FF'><em><b>--relay&nbsp;</b></em></font>")
 	         .replace(/--地址/g, "<font color='#0000FF'><em><b>--ip</em></b></font>")
-	         .replace(/网卡名/g, "<font color='#0000FF'><em><b>--nic&nbsp;</em></b></font>")
-                 .replace(/直连方式/g, "<font color='#0000FF'><em><b>--use-channel&nbsp;</em></b></font>")
+	         .replace(/网卡名/g, "<font color='#0000FF'><em><b>--nic&nbsp;</b></em></font>")
+                 .replace(/直连方式/g, "<font color='#0000FF'><em><b>--use-channel&nbsp;</b></em></font>")
                  .replace(/-proxy/g, "<font color='#0000FF'><em><b>-proxy</em></b></font>");
   tb.innerHTML = "<br><font color='#FF00FF'>&nbsp;&nbsp;&nbsp;<b><%:当前启动参数： %></b></font><br>" + "<font color='#000066'>" + rv.cmd + "</font>";
 }
 				btn.disabled = false;
-				btn.value = '<%:vnt-cli启动参数%>';
+				btn.value = '<%:VNT2启动参数%>';
 			}
 		);
 		return false;
 	}
 //]]></script>
-<input type="button" class="btn cbi-button cbi-button-apply" value="<%:vnt-cli启动参数%>" onclick="return vnt_cmd(this)" />
+<input type="button" class="btn cbi-button cbi-button-apply" value="<%:VNT2启动参数%>" onclick="return vnt_cmd(this)" />
 <span id="<%=self.option%>-status"><em><%=self.value%></em></span>
 <%+cbi/valuefooter%>
